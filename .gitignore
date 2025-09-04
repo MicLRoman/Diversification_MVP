@@ -1,0 +1,4 @@
+portfolio_bot/config.py
+firebase_credentials.json
+ngrok.exe
+data/portfolio_bot.db

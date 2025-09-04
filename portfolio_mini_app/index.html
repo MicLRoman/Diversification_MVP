@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="color-scheme" content="dark">
+    <title>PortfolioBot</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <!-- Логотип или название вашего проекта -->
+        </header>
+
+        <main class="main-content">
+            <div class="hero-section">
+                <h1 class="hero-title">Создайте свой первый пассивный доход</h1>
+                <p class="hero-subtitle">С нами вы сможете собрать портфель и начать инвестировать уже сегодня</p>
+                
+                <div class="button-group">
+                    <!-- Добавляем ID кнопкам -->
+                    <button id="demo-portfolio-btn" class="btn btn-secondary">
+                        Демопортфель
+                    </button>
+                    <button id="auto-selection-btn" class="btn btn-main">
+                        Автоподбор
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="credits">
+                    <p>&copy; 2025 PortfolioBot</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Подключаем скрипты -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- script.js - это наше "ядро" с Firebase, он должен идти первым -->
+    <script src="js/script.js" type="module"></script>
+    <!-- index.js - это скрипт для этой конкретной страницы -->
+    <script src="js/index.js" type="module"></script>
+
+</body>
+</html>
+
