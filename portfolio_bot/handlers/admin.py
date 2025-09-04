@@ -189,3 +189,48 @@ def register_admin_handlers(bot: TeleBot, db, app_id, admin_ids):
         except Exception as e:
             bot.reply_to(message, f"Произошла ошибка при создании отчета: {e}")
 
+    # === НОВАЯ КОМАНДА ДЛЯ ОЧИСТКИ БАЗЫ ДАННЫХ ===
+    @bot.message_handler(commands=['clear_db'], func=lambda message: message.from_user.id in admin_ids)
+    def clear_database(message):
+        if not db:
+            bot.reply_to(message, "⚠️ База данных недоступна.")
+            return
+
+        # Защита от случайного удаления
+        if "confirm" not in message.text.lower():
+            bot.reply_to(
+                message,
+                "🛑 *ВНИМАНИЕ!* Это действие необратимо удалит все события из базы данных.\n"
+                "Для подтверждения, пожалуйста, отправьте команду еще раз в формате:\n"
+                "`/clear_db confirm`",
+                parse_mode='Markdown'
+            )
+            return
+
+        try:
+            bot.reply_to(message, "⏳ Начинаю очистку базы данных... Это может занять некоторое время.")
+            
+            events_ref = db.collection(f'artifacts/{app_id}/public/data/events')
+            docs = events_ref.stream()
+            
+            deleted_count = 0
+            batch = db.batch()
+            for doc in docs:
+                batch.delete(doc.reference)
+                deleted_count += 1
+                # Отправляем батч каждые 500 документов
+                if deleted_count % 500 == 0:
+                    batch.commit()
+                    batch = db.batch()
+            
+            # Отправляем оставшиеся документы
+            if deleted_count % 500 != 0:
+                 batch.commit()
+
+            success_message = f"✅ *База данных успешно очищена.*\nУдалено документов: *{deleted_count}*"
+            bot.reply_to(message, success_message, parse_mode='Markdown')
+
+        except Exception as e:
+            bot.reply_to(message, f"❌ Произошла ошибка при очистке базы данных: {e}")
+
+
